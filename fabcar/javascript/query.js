@@ -9,7 +9,7 @@ const path = require('path');
 
 const ccpPath = path.resolve(__dirname, '..', '..', 'first-network', 'connection-org1.json');
 
-async function main() {
+exports.listProducts = async () => {
     try {
 
         // Create a new file system based wallet for managing identities.
@@ -38,14 +38,17 @@ async function main() {
         // Evaluate the specified transaction.
         // queryCar transaction - requires 1 argument, ex: ('queryCar', 'CAR4')
         // queryAllCars transaction - requires no arguments, ex: ('queryAllCars')
-        const result = await contract.evaluateTransaction('queryCar', 'CUP15');
-        // const result = await contract.evaluateTransaction('queryAllCars');
-        console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
+        // const result = await contract.evaluateTransaction('queryCar', 'CUP15');
+        const result = await contract.evaluateTransaction('queryAllCars');
+        // console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
+        return JSON.parse(result.toString());
 
     } catch (error) {
         console.error(`Failed to evaluate transaction: ${error}`);
-        process.exit(1);
+        throw error;
+        // process.exit(1);
     }
 }
 
-main();
+// main();
+// this.listProducts();

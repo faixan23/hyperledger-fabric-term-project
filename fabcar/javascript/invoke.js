@@ -9,7 +9,7 @@ const path = require('path');
 
 const ccpPath = path.resolve(__dirname, '..', '..', 'first-network', 'connection-org1.json');
 
-async function main() {
+exports.storeProduct = async (data) => {
     try {
 
         // Create a new file system based wallet for managing identities.
@@ -38,11 +38,14 @@ async function main() {
         // Submit the specified transaction.
         // createCar transaction - requires 5 argument, ex: ('createCar', 'CAR12', 'Honda', 'Accord', 'Black', 'Tom')
         // changeCarOwner transaction - requires 2 args , ex: ('changeCarOwner', 'CAR10', 'Dave')
-        await contract.submitTransaction('createCar', 'CUP15', 'CUP', 'Description', 'Black', 'FAIZAN12');
-        console.log('Transaction has been submitted');
+        console.log(data);
+        const result = await contract.submitTransaction('createCar', 'CAR19', data.name, data.description, data.color, 'FAIZAN12');
+        console.log(`Transaction has been submitted ${result.toString()}`);
 
         // Disconnect from the gateway.
         await gateway.disconnect();
+
+        return { message: "Product has been successfully added." };
 
     } catch (error) {
         console.error(`Failed to submit transaction: ${error}`);
@@ -50,4 +53,4 @@ async function main() {
     }
 }
 
-main();
+// main();
