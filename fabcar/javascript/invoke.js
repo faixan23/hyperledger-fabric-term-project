@@ -38,8 +38,8 @@ exports.storeProduct = async (data) => {
         // Submit the specified transaction.
         // createCar transaction - requires 5 argument, ex: ('createCar', 'CAR12', 'Honda', 'Accord', 'Black', 'Tom')
         // changeCarOwner transaction - requires 2 args , ex: ('changeCarOwner', 'CAR10', 'Dave')
-        console.log(data);
-        const result = await contract.submitTransaction('createCar', 'CAR19', data.name, data.description, data.color, 'FAIZAN12');
+        // console.log(data);
+        const result = await contract.submitTransaction('createCar', `CAR${data.id}`, data.name, data.description, data.color, 'FAIZAN12');
         console.log(`Transaction has been submitted ${result.toString()}`);
 
         // Disconnect from the gateway.
