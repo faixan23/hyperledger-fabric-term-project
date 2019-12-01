@@ -16,11 +16,13 @@
     "license": "Apache-2.0",
     "dependencies": {
         "@hapi/joi": "^16.1.8",
+        "cors": "^2.8.5",
         "express": "^4.17.1",
         "fabric-ca-client": "~1.4.0",
         "fabric-network": "~1.4.0",
         "joi": "^14.3.1",
-        "nodemon": "^2.0.1"
+        "nodemon": "^2.0.1",
+        "pm2": "^4.2.0"
     },
     "devDependencies": {
         "chai": "^4.2.0",

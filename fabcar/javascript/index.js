@@ -2,7 +2,10 @@
 var express        = require('express');
 var app            = express();
 var bodyParser     = require('body-parser');
+const cors = require('cors');
 
+
+app.use(cors());
 
 // set our port
 var port = process.env.PORT || 8080; 
@@ -30,6 +33,9 @@ app.use(express.static(__dirname + '/public'));
 
 const router = express.Router();
 const ProductController = require('../javascript/app/controllers/productController');
+app.get('/', async(req, res) => {
+    return res.send({message: "Hyperledger Fabric API is working!"});
+});
 app.get('/list-products', ProductController.listProducts);
 app.post('/store-product', ProductController.storeProduct);
 
