@@ -67,4 +67,4 @@ npm i -g nodemon
 nodemon index.js
 ```
 
-5- Check that API is running or not by visiting the following [installation instructions](http://localhost:8080).
+5- Check that API is running or not by visiting the following [link](http://localhost:8080).
