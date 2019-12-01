@@ -39,3 +39,32 @@ Hyperledger Project source code files are made available under the Apache
 License, Version 2.0 (Apache-2.0), located in the [LICENSE](LICENSE) file.
 Hyperledger Project documentation files are made available under the Creative
 Commons Attribution 4.0 International License (CC-BY-4.0), available at http://creativecommons.org/licenses/by/4.0/.
+
+
+## API Setup Guide
+
+1- Go to the following path
+
+```
+cd {project-path}/hyperledger-fabric-term-project/fabcar/javascript/
+```
+
+2- Install the Node packages
+
+```
+npm i
+```
+
+3- Install nodemon package to serve api's
+
+```
+npm i -g nodemon
+```
+
+4- Start API server 
+
+```
+nodemon index.js
+```
+
+5- Check that API is running or not by visiting the following [link](localhost:8080).
