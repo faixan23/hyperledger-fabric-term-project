@@ -39,7 +39,8 @@ exports.storeProduct = async (data) => {
         // createCar transaction - requires 5 argument, ex: ('createCar', 'CAR12', 'Honda', 'Accord', 'Black', 'Tom')
         // changeCarOwner transaction - requires 2 args , ex: ('changeCarOwner', 'CAR10', 'Dave')
         // console.log(data);
-        const result = await contract.submitTransaction('createCar', `CAR${data.id}`, data.name, data.description, data.color, 'FAIZAN12');
+        const result = await contract.submitTransaction('createCar', `ID${data.id}`, data.name, data.description, data.color, data.make, data.price, data.quantity, 'FAIZAN12',  data.image, data.type);
+        // const result = await contract.submitTransaction('createCar',JSON.stringify(data));
         console.log(`Transaction has been submitted ${result.toString()}`);
 
         // Disconnect from the gateway.
@@ -48,9 +49,23 @@ exports.storeProduct = async (data) => {
         return { message: "Product has been successfully added." };
 
     } catch (error) {
+        // throw error;
         console.error(`Failed to submit transaction: ${error}`);
         process.exit(1);
     }
 }
 
+// this.storeProduct({
+//     id: 22,
+//     name : "CAR name",
+//     description:"Desc",
+//     color: "Black",
+//     docType: "type",
+//     make: "2019",
+//     price: "5000",
+//     owner: "FAIZAN12",
+//     ID: "CAR21",
+//     quantity: "5",
+//     image: "lds;nfls"
+// });
 // main();

@@ -3,9 +3,11 @@ var express        = require('express');
 var app            = express();
 var bodyParser     = require('body-parser');
 const cors = require('cors');
-
+const fileUpload = require('express-fileupload');
 
 app.use(cors());
+app.use(fileUpload());
+
 
 // set our port
 var port = process.env.PORT || 8080; 
