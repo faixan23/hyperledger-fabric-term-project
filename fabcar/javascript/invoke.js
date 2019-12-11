@@ -42,7 +42,9 @@ exports.storeProduct = async (data) => {
         const result = await contract.submitTransaction('createCar', `ID${data.id}`, data.name, data.description, data.color, data.make, data.price, data.quantity, 'FAIZAN12',  data.image, data.type);
         // const result = await contract.submitTransaction('createCar',JSON.stringify(data));
         console.log(`Transaction has been submitted ${result.toString()}`);
-
+		//Purchase car function call;
+		//Purchase car requires to arguments , card ID and new Owner name
+		const result = await contract.submitTransaction('purchaseCar', `ID${data.id}`, );
         // Disconnect from the gateway.
         await gateway.disconnect();
 
