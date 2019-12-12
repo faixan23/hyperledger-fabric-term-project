@@ -6,11 +6,11 @@
 #
 
 # if version not passed in, default to latest released version
-VERSION=1.4.3
+VERSION=1.4.4
 # if ca version not passed in, default to latest released version
-CA_VERSION=1.4.3
+CA_VERSION=1.4.4
 # current version of thirdparty images (couchdb, kafka and zookeeper) released
-THIRDPARTY_IMAGE_VERSION=0.4.15
+THIRDPARTY_IMAGE_VERSION=0.4.18
 ARCH=$(echo "$(uname -s|tr '[:upper:]' '[:lower:]'|sed 's/mingw64_nt.*/windows/')-$(uname -m | sed 's/x86_64/amd64/g')")
 MARCH=$(uname -m)
 
@@ -23,42 +23,28 @@ printHelp() {
     echo "-s : bypass fabric-samples repo clone"
     echo "-b : bypass download of platform-specific binaries"
     echo
-    echo "e.g. bootstrap.sh 1.4.3 -s"
-    echo "would download docker images and binaries for version 1.4.3"
+    echo "e.g. bootstrap.sh 1.4.4 -s"
+    echo "would download docker images and binaries for version 1.4.4"
 }
 
-# dockerFabricPull() pulls docker images from fabric and chaincode repositories
+# dockerPull() pulls docker images from fabric and chaincode repositories
 # note, if a docker image doesn't exist for a requested release, it will simply
 # be skipped, since this script doesn't terminate upon errors.
-dockerFabricPull() {
-    local FABRIC_TAG=$1
-    for IMAGES in peer orderer ccenv tools baseos nodeenv javaenv; do
-        echo "==> FABRIC IMAGE: $IMAGES"
-        echo
-        docker pull "hyperledger/fabric-$IMAGES:$FABRIC_TAG"
-        docker tag "hyperledger/fabric-$IMAGES:$FABRIC_TAG" "hyperledger/fabric-$IMAGES"
+
+dockerPull() {
+    image_tag=$1
+    shift
+    while [[ $# -gt 0 ]]
+    do
+        image_name="$1"
+        echo "====> hyperledger/fabric-$image_name:$image_tag"
+        docker pull "hyperledger/fabric-$image_name:$image_tag"
+        docker tag "hyperledger/fabric-$image_name:$image_tag" "hyperledger/fabric-$image_name"
+        shift
     done
 }
 
-dockerThirdPartyImagesPull() {
-    local THIRDPARTY_TAG=$1
-    for IMAGES in couchdb kafka zookeeper; do
-        echo "==> THIRDPARTY DOCKER IMAGE: $IMAGES"
-        echo
-        docker pull "hyperledger/fabric-$IMAGES:$THIRDPARTY_TAG"
-        docker tag "hyperledger/fabric-$IMAGES:$THIRDPARTY_TAG" "hyperledger/fabric-$IMAGES"
-    done
-}
-
-dockerCaPull() {
-    local CA_TAG=$1
-    echo "==> FABRIC CA IMAGE"
-    echo
-    docker pull "hyperledger/fabric-ca:$CA_TAG"
-    docker tag "hyperledger/fabric-ca:$CA_TAG" "hyperledger/fabric-ca"
-}
-
-samplesInstall() {
+cloneSamplesRepo() {
     # clone (if needed) hyperledger/fabric-samples and checkout corresponding
     # version to the binaries and docker images to be downloaded
     if [ -d first-network ]; then
@@ -90,36 +76,50 @@ download() {
     fi
 }
 
-binariesInstall() {
+pullBinaries() {
     echo "===> Downloading version ${FABRIC_TAG} platform specific fabric binaries"
-    # download "${BINARY_FILE}" "https://github.com/hyperledger/fabric/releases/download/v${VERSION}/${BINARY_FILE}"
-    # if [ $? -eq 22 ]; then
-    #     echo
-    #     echo "------> ${FABRIC_TAG} platform specific fabric binary is not available to download <----"
-    #     echo
-    #     exit
-    # fi
+    download "${BINARY_FILE}" "https://github.com/hyperledger/fabric/releases/download/v${VERSION}/${BINARY_FILE}"
+    if [ $? -eq 22 ]; then
+        echo
+        echo "------> ${FABRIC_TAG} platform specific fabric binary is not available to download <----"
+        echo
+        exit
+    fi
 
     echo "===> Downloading version ${CA_TAG} platform specific fabric-ca-client binary"
-    # download "${CA_BINARY_FILE}" "https://github.com/hyperledger/fabric-ca/releases/download/v${VERSION}/${CA_BINARY_FILE}"
-    # if [ $? -eq 22 ]; then
-    #     echo
-    #     echo "------> ${CA_TAG} fabric-ca-client binary is not available to download  (Available from 1.1.0-rc1) <----"
-    #     echo
-    #     exit
-    # fi
+    download "${CA_BINARY_FILE}" "https://github.com/hyperledger/fabric-ca/releases/download/v${VERSION}/${CA_BINARY_FILE}"
+    if [ $? -eq 22 ]; then
+        echo
+        echo "------> ${CA_TAG} fabric-ca-client binary is not available to download  (Available from 1.1.0-rc1) <----"
+        echo
+        exit
+    fi
 }
 
-dockerInstall() {
+pullDockerImages() {
     command -v docker >& /dev/null
     NODOCKER=$?
     if [ "${NODOCKER}" == 0 ]; then
+        FABRIC_IMAGES=(peer orderer ccenv tools)
+        case "$VERSION" in
+        1.*)
+            FABRIC_IMAGES+=(javaenv)
+            shift
+            ;;
+        2.*)
+            FABRIC_IMAGES+=(nodeenv baseos javaenv)
+            shift
+            ;;
+        esac
+        echo "FABRIC_IMAGES:" "${FABRIC_IMAGES[@]}"
         echo "===> Pulling fabric Images"
-        dockerFabricPull "${FABRIC_TAG}"
+        dockerPull "${FABRIC_TAG}" "${FABRIC_IMAGES[@]}"
         echo "===> Pulling fabric ca Image"
-        dockerCaPull "${CA_TAG}"
+        CA_IMAGE=(ca)
+        dockerPull "${CA_TAG}" "${CA_IMAGE[@]}"
         echo "===> Pulling thirdparty docker images"
-        dockerThirdPartyImagesPull "${THIRDPARTY_TAG}"
+        THIRDPARTY_IMAGES=(zookeeper kafka couchdb)
+        dockerPull "${THIRDPARTY_TAG}" "${THIRDPARTY_IMAGES[@]}"
         echo
         echo "===> List out hyperledger docker images"
         docker images | grep hyperledger
@@ -179,19 +179,19 @@ done
 
 if [ "$SAMPLES" == "true" ]; then
     echo
-    echo "Installing hyperledger/fabric-samples repo"
+    echo "Clone hyperledger/fabric-samples repo"
     echo
-    samplesInstall
+    cloneSamplesRepo
 fi
 if [ "$BINARIES" == "true" ]; then
     echo
-    echo "Installing Hyperledger Fabric binaries"
+    echo "Pull Hyperledger Fabric binaries"
     echo
-    binariesInstall
+    pullBinaries
 fi
 if [ "$DOCKER" == "true" ]; then
     echo
-    echo "Installing Hyperledger Fabric docker images"
+    echo "Pull Hyperledger Fabric docker images"
     echo
-    dockerInstall
+    pullDockerImages
 fi
