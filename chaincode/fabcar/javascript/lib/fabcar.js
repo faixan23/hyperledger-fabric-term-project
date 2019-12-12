@@ -115,6 +115,28 @@ class FabCar extends Contract {
         await ctx.stub.putState(ID, Buffer.from(JSON.stringify(car)));
         console.info('============= END : changeCarOwner ===========');
     }
+	//purchase car code
+	async purchaseCar(ctx, ID, newOwner) {
+        console.info('============= START : purchaseCar ===========');
+
+        const carAsBytes = await ctx.stub.getState(ID); // get the car from chaincode state
+        if (!carAsBytes || carAsBytes.length === 0) {
+            throw new Error(`${ID} does not exist`);
+        }
+        const car = JSON.parse(carAsBytes.toString());
+		let value = parseInt(car.price);
+		let oldownerName = car.owner
+		const newOnwer = JSON.parse(await ctx.stub.getState(oldownerName).toString);
+		const oldowner = JSON.parse(await ctx.stub.getState(oldownerName).toString);
+		if (price > newOwner.balance) {
+			throw new Error(`${newOwner.balane} is not enough for purchasing the car`);
+		}
+		newOwner.balance = parseInt(newOwner.balance) - value;
+        car.owner = newOwner;
+		oldowner.balance = parseInt(oldowner.balance) + value;
+        await ctx.stub.putState(ID, Buffer.from(JSON.stringify(car)));
+        console.info('============= END : purchaseCar ===========');
+    }
 
 }
 
