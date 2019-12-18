@@ -35,11 +35,15 @@ app.use(express.static(__dirname + '/public'));
 
 const router = express.Router();
 const ProductController = require('../javascript/app/controllers/productController');
+const UserController = require('../javascript/app/controllers/userController');
 app.get('/', async(req, res) => {
     return res.send({message: "Hyperledger Fabric API is working!"});
 });
 app.get('/list-products', ProductController.listProducts);
 app.post('/store-product', ProductController.storeProduct);
+app.post('/buy-product', ProductController.buyProduct);
+app.get('/get-user/:userId', UserController.getUser);
+app.post('/store-user', UserController.storeUser);
 
 // start app ===============================================
 // startup our app at http://localhost:8080

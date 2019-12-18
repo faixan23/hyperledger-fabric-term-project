@@ -15,3 +15,12 @@ exports.validateStoreProduct = (data) => {
 
     return schema.validate(data);
 }
+
+exports.validateBuyProduct = (data) => {
+    const schema = Joi.object({
+        product_id: Joi.string().required(),
+        user_id: Joi.string().required(),
+    });
+
+    return schema.validate(data);
+}
