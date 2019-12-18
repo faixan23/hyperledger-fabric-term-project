@@ -14,10 +14,10 @@ class FabCar extends Contract {
         const cars = [
             {
                 id: '001',
-                name: 'Blue Toyota',
-                description: 'Blue Toyota Automatic with ABS',
+                name: 'Blue Shirt',
+                description: 'Blue Shorts Desc',
                 color: 'blue',
-                make: 'Toyota',
+                make: 'Denim',
                 price: 5000,
                 quantity: 5,
                 owner: 'FAIZAN23',
@@ -32,10 +32,10 @@ class FabCar extends Contract {
             },
             {
                 id: '002',
-                name: 'Black Honda City',
-                description: 'Automatic with ABS',
+                name: 'Black Casual Coat',
+                description: 'Black Casual Coat desc',
                 color: 'Black',
-                make: 'Honda',
+                make: 'Levis',
                 price: 5000,
                 quantity: 5,
                 owner: 'FAIZAN23',
@@ -104,7 +104,7 @@ class FabCar extends Contract {
             make,
             price,
             owner,
-            id: 'ID' + id,
+            id: id,
             quantity,
             image,
             reviews: []
