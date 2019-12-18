@@ -18,16 +18,16 @@ exports.storeProduct = async (data) => {
         console.log(`Wallet path: ${walletPath}`);
 
         // Check to see if we've already enrolled the user.
-        const userExists = await wallet.exists('faizan');
+        const userExists = await wallet.exists('asad');
         if (!userExists) {
-            console.log('An identity for the user "faizan" does not exist in the wallet');
+            console.log('An identity for the user "asad" does not exist in the wallet');
             console.log('Run the registerUser.js application before retrying');
             return;
         }
 
         // Create a new gateway for connecting to our peer node.
         const gateway = new Gateway();
-        await gateway.connect(ccpPath, { wallet, identity: 'faizan', discovery: { enabled: true, asLocalhost: true } });
+        await gateway.connect(ccpPath, { wallet, identity: 'asad', discovery: { enabled: true, asLocalhost: true } });
 
         // Get the network (channel) our contract is deployed to.
         const network = await gateway.getNetwork('mychannel');
@@ -90,7 +90,7 @@ exports.storeUser = async (data) => {
         const result = await contract.submitTransaction('createUser', data.firstName, data.lastName, data.email, data.email);
         // const result = await contract.submitTransaction('createCar',JSON.stringify(data));
         console.log(`Transaction has been submitted ${result.toString()}`);
-		// //Purchase car function call;
+		// //Purchase car func
 		// //Purchase car requires to arguments , card ID and new Owner name
 		// const result = await contract.submitTransaction('purchaseCar', `ID${data.id}`, );
         // Disconnect from the gateway.
@@ -148,7 +148,7 @@ exports.buyProduct = async (data) => {
         console.error(`Failed to submit transaction: ${error}`);
         process.exit(1);
     }
-}
+};
 
 // this.storeProduct({
 //     id: 22,
@@ -158,7 +158,7 @@ exports.buyProduct = async (data) => {
 //     docType: "type",
 //     make: "2019",
 //     price: "5000",
-//     owner: "FAIZAN12",
+//     owner: "ASAD12",
 //     ID: "CAR21",
 //     quantity: "5",
 //     image: "lds;nfls"
