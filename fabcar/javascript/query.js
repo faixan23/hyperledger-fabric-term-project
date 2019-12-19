@@ -91,4 +91,4 @@ exports.getUser = async (id) => {
 }
 
 // main();
-// this.listProducts();
+this.listProducts();
