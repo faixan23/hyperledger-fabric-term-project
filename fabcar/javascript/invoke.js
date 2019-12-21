@@ -38,7 +38,9 @@ exports.storeProduct = async (data) => {
         // Submit the specified transaction.
         // createCar transaction - requires 5 argument, ex: ('createCar', 'CAR12', 'Honda', 'Accord', 'Black', 'Tom')
         // changeCarOwner transaction - requires 2 args , ex: ('changeCarOwner', 'CAR10', 'Dave')
-        // console.log(data);
+        console.log(data);
+        // return {id:data}
+        data.id = data.id.replace("ID", "");
         const result = await contract.submitTransaction('createCar', `ID${data.id}`, data.name, data.description, data.color, data.make, data.price, data.quantity, 'FAIZAN12', data.image, data.type);
 
         // const result = await contract.submitTransaction('createCar',JSON.stringify(data));
@@ -158,6 +160,7 @@ this.storeProduct({
     description: 'Black Casual Coat desc',
     color: 'Black',
     make: 'Levis',
+    review: [ {'id':1}],
     price: '5000',
     quantity: '5',
     owner: 'FAIZAN23',
