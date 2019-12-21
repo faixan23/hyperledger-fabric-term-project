@@ -14,7 +14,7 @@ exports.validateStoreProduct = (data) => {
     });
 
     return schema.validate(data);
-}
+};
 
 exports.validateBuyProduct = (data) => {
     const schema = Joi.object({
@@ -23,4 +23,13 @@ exports.validateBuyProduct = (data) => {
     });
 
     return schema.validate(data);
-}
+};
+
+exports.validateReviewProduct = (data) => {
+    const schema = Joi.object({
+        user_id: Joi.string().required(),
+        description: Joi.string().required(),
+    });
+
+    return schema.validate(data);
+};

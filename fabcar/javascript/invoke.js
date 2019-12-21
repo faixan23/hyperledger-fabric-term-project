@@ -154,6 +154,56 @@ exports.buyProduct = async (data) => {
 };
 
 
+/*
+ * This function is for review product
+ * @param {data}
+ * @return JSON
+ */
+exports.reviewProduct = async (data) => {
+    try {
+
+        // Create a new file system based wallet for managing identities.
+        const walletPath = path.join(process.cwd(), 'wallet');
+        const wallet = new FileSystemWallet(walletPath);
+        console.log(`Wallet path: ${walletPath}`);
+
+        // Check to see if we've already enrolled the user.
+        const userExists = await wallet.exists('faizan');
+        if (!userExists) {
+            console.log('An identity for the user "faizan" does not exist in the wallet');
+            console.log('Run the registerUser.js application before retrying');
+            return;
+        }
+
+        // Create a new gateway for connecting to our peer node.
+        const gateway = new Gateway();
+        await gateway.connect(ccpPath, { wallet, identity: 'faizan', discovery: { enabled: true, asLocalhost: true } });
+
+        // Get the network (channel) our contract is deployed to.
+        const network = await gateway.getNetwork('mychannel');
+
+        // Get the contract from the network.
+        const contract = network.getContract('fabcar');
+
+        //Review car function call;
+        await contract.submitTransaction('createReview', data.user_id, data.description);
+        // Disconnect from the gateway.
+        await gateway.disconnect();
+
+        return { message: 'Product has been review successfully.' };
+
+    } catch (error) {
+        // throw error;
+        console.error(`Failed to submit transaction: ${error}`);
+        process.exit(1);
+    }
+};
+
+// this.buyProduct({
+//     product_id: 'ID001',
+//     user_id: 'f.sh@ymail.com'
+// });
+
 // this.storeProduct({
 //     id: 2,
 //     name: 'Black Casual Coat',
