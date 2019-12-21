@@ -42,7 +42,7 @@ app.get('/', async(req, res) => {
 app.get('/list-products', ProductController.listProducts);
 app.post('/store-product', ProductController.storeProduct);
 app.post('/buy-product', ProductController.buyProduct);
-app.post('/review-product', ProductController.reviewProduct());
+app.post('/review-product', ProductController.reviewProduct);
 app.get('/get-user/:userId', UserController.getUser);
 app.post('/store-user', UserController.storeUser);
 

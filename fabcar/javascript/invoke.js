@@ -199,10 +199,10 @@ exports.reviewProduct = async (data) => {
     }
 };
 
-// this.buyProduct({
-//     product_id: 'ID001',
-//     user_id: 'f.sh@ymail.com'
-// });
+this.reviewProduct({
+    description: 'this is funny review',
+    user_id: 'f.sh@ymail.com'
+});
 
 // this.storeProduct({
 //     id: 2,
