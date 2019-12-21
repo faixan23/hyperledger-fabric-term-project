@@ -186,7 +186,7 @@ exports.reviewProduct = async (data) => {
         const contract = network.getContract('fabcar');
 
         //Review car function call;
-        await contract.submitTransaction('createReview', data.user_id, data.description);
+        await contract.submitTransaction('createReview', data.product_id, data.user_id, data.description);
         // Disconnect from the gateway.
         await gateway.disconnect();
 
@@ -200,8 +200,9 @@ exports.reviewProduct = async (data) => {
 };
 
 this.reviewProduct({
-    description: 'this is funny review',
-    user_id: 'f.sh@ymail.com'
+    product_id: 'ID001',
+    user_id: 'f.sh@ymail.com',
+    description: 'this is funny review'
 });
 
 // this.storeProduct({

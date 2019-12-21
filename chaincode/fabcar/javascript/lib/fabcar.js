@@ -66,7 +66,7 @@ class FabCar extends Contract {
         console.log(carAsBytes.toString());
         return carAsBytes.toString();
     }
-    
+
     async queryUser(ctx, ID) {
         const userAsBytes = await ctx.stub.getState(ID); // get the user from chaincode state
         if (!userAsBytes || userAsBytes.length === 0) {
@@ -160,7 +160,7 @@ class FabCar extends Contract {
         console.info('============= END : changeCarOwner ===========');
     }
 
-    
+
 	//purchase car code
 	async purchaseCar(ctx, productId, userId) {
         console.info('============= START : purchaseCar ===========');
@@ -172,7 +172,7 @@ class FabCar extends Contract {
         const car = JSON.parse(carAsBytes.toString());
         console.log(car);
         let value = parseInt(car.price);
-        
+
         const userAsBytes = await ctx.stub.getState(userId); // get the user from chaincode state
         if (!userAsBytes || userAsBytes.length === 0) {
             throw new Error(`${ID} does not exist`);
@@ -210,7 +210,7 @@ class FabCar extends Contract {
         const car = JSON.parse(carAsBytes.toString());
         console.log(car);
         let value = parseInt(car.price);
-        
+
         const userAsBytes = await ctx.stub.getState(userId); // get the user from chaincode state
         if (!userAsBytes || userAsBytes.length === 0) {
             throw new Error(`${ID} does not exist`);
@@ -237,7 +237,7 @@ class FabCar extends Contract {
         await ctx.stub.putState(userId, Buffer.from(JSON.stringify(user)));
         console.info('============= END : purchaseCar ===========');
     }
-    
+
     async purchaseCarR2P(ctx, productId, userId) {
         console.info('============= START : purchaseCar ===========');
 
@@ -248,7 +248,7 @@ class FabCar extends Contract {
         const car = JSON.parse(carAsBytes.toString());
         console.log(car);
         let value = parseInt(car.price);
-        
+
         const userAsBytes = await ctx.stub.getState(userId); // get the user from chaincode state
         if (!userAsBytes || userAsBytes.length === 0) {
             throw new Error(`${ID} does not exist`);
@@ -272,6 +272,23 @@ class FabCar extends Contract {
         await ctx.stub.putState(productId, Buffer.from(JSON.stringify(car)));
         // await ctx.stub.putState(userId, Buffer.from(JSON.stringify(user)));
         console.info('============= END : purchaseCar ===========');
+    }
+
+    async createReview(ctx, product_id, user_id, description) {
+        console.info('============= START : Create Review ===========');
+		const carAsBytes = await ctx.stub.getState(product_id);
+
+		let car = JSON.parse(carAsBytes.toString());
+		var review = {
+			'product_id': product_id,
+			'user_id': user_id,
+            'description': description,
+			'token': '123456'
+		};
+
+		car.reviews.push(review);
+        await ctx.stub.putState(id, Buffer.from(JSON.stringify(car)));
+        console.info('============= END : Create Review ===========');
     }
 
 }
