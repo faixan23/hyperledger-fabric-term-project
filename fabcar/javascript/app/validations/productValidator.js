@@ -27,6 +27,7 @@ exports.validateBuyProduct = (data) => {
 
 exports.validateReviewProduct = (data) => {
     const schema = Joi.object({
+        product_id: Joi.string().required(),
         user_id: Joi.string().required(),
         description: Joi.string().required(),
     });
