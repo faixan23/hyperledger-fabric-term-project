@@ -14,6 +14,8 @@ exports.getUser = async (req, res) => {
 
 exports.storeUser = async (req, res) => {
     try {
+        console.log(req.body);
+        
         const user = await invoke.storeUser(req.body);
         return res.send({data: user});
     } catch (error) {

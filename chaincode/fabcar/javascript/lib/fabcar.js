@@ -170,6 +170,7 @@ class FabCar extends Contract {
             throw new Error(`${ID} does not exist`);
         }
         const car = JSON.parse(carAsBytes.toString());
+        console.log(car);
         let value = parseInt(car.price);
         
         const userAsBytes = await ctx.stub.getState(userId); // get the user from chaincode state
@@ -177,6 +178,7 @@ class FabCar extends Contract {
             throw new Error(`${ID} does not exist`);
         }
         const user = JSON.parse(userAsBytes.toString());
+        console.log(user);
 		// const newOnwer = JSON.parse(await ctx.stub.getState(oldownerName).toString());
 		// const oldowner = JSON.parse(await ctx.stub.getState(oldownerName).toString());
 		if (value > user.balance) {
@@ -184,15 +186,91 @@ class FabCar extends Contract {
 		}
 		user.balance = parseInt(user.balance) - value;
         car.quantity = car.quantity - 1;
-        let token = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5);
+        let token = 'sdadasd';
+        // let token = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5);
         user.puchasedProducts.push({
             productId: car.id,
             reviewToken: token,
         });
+        console.log(user);
         // car.
 		// user.balance = parseInt(oldowner.balance) + value;
         await ctx.stub.putState(productId, Buffer.from(JSON.stringify(car)));
         await ctx.stub.putState(userId, Buffer.from(JSON.stringify(user)));
+        console.info('============= END : purchaseCar ===========');
+    }
+	//purchase car code
+	async purchaseCarR2U(ctx, productId, userId) {
+        console.info('============= START : purchaseCar ===========');
+
+        const carAsBytes = await ctx.stub.getState(productId); // get the car from chaincode state
+        if (!carAsBytes || carAsBytes.length === 0) {
+            throw new Error(`${ID} does not exist`);
+        }
+        const car = JSON.parse(carAsBytes.toString());
+        console.log(car);
+        let value = parseInt(car.price);
+        
+        const userAsBytes = await ctx.stub.getState(userId); // get the user from chaincode state
+        if (!userAsBytes || userAsBytes.length === 0) {
+            throw new Error(`${ID} does not exist`);
+        }
+        const user = JSON.parse(userAsBytes.toString());
+        console.log(user);
+		// const newOnwer = JSON.parse(await ctx.stub.getState(oldownerName).toString());
+		// const oldowner = JSON.parse(await ctx.stub.getState(oldownerName).toString());
+		if (value > user.balance) {
+			throw new Error(`${user.balane} is not enough for purchasing the car`);
+		}
+		user.balance = parseInt(user.balance) - value;
+        car.quantity = car.quantity - 1;
+        let token = 'dafasfas';
+        // let token = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5);
+        user.puchasedProducts.push({
+            productId: car.id,
+            reviewToken: token,
+        });
+        console.log(user);
+        // car.
+		// user.balance = parseInt(oldowner.balance) + value;
+        // await ctx.stub.putState(productId, Buffer.from(JSON.stringify(car)));
+        await ctx.stub.putState(userId, Buffer.from(JSON.stringify(user)));
+        console.info('============= END : purchaseCar ===========');
+    }
+    
+    async purchaseCarR2P(ctx, productId, userId) {
+        console.info('============= START : purchaseCar ===========');
+
+        const carAsBytes = await ctx.stub.getState(productId); // get the car from chaincode state
+        if (!carAsBytes || carAsBytes.length === 0) {
+            throw new Error(`${ID} does not exist`);
+        }
+        const car = JSON.parse(carAsBytes.toString());
+        console.log(car);
+        let value = parseInt(car.price);
+        
+        const userAsBytes = await ctx.stub.getState(userId); // get the user from chaincode state
+        if (!userAsBytes || userAsBytes.length === 0) {
+            throw new Error(`${ID} does not exist`);
+        }
+        const user = JSON.parse(userAsBytes.toString());
+        console.log(user);
+		// const newOnwer = JSON.parse(await ctx.stub.getState(oldownerName).toString());
+		// const oldowner = JSON.parse(await ctx.stub.getState(oldownerName).toString());
+		if (value > user.balance) {
+			throw new Error(`${user.balane} is not enough for purchasing the car`);
+		}
+		user.balance = parseInt(user.balance) - value;
+        car.quantity = car.quantity - 1;
+        // let token = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5);
+        // user.puchasedProducts.push({
+        //     productId: car.id,
+        //     reviewToken: token,
+        // });
+        // car.
+		// user.balance = parseInt(oldowner.balance) + value;
+        await ctx.stub.putState(productId, Buffer.from(JSON.stringify(car)));
+        // await ctx.stub.putState(userId, Buffer.from(JSON.stringify(user)));
         console.info('============= END : purchaseCar ===========');
     }
 
