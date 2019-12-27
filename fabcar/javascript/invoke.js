@@ -140,7 +140,9 @@ exports.buyProduct = async (data) => {
 
         //Purchase car function call;
         //Purchase car requires to arguments , card ID and new Owner name
-        const result = await contract.submitTransaction('purchaseCar', data.product_id, data.user_id);
+        const result1 = await contract.submitTransaction('purchaseCar', data.product_id, data.user_id);
+        // this.delay(7000);
+        // const result = await contract.submitTransaction('purchaseCarR2P', data.product_id, data.user_id);
         // Disconnect from the gateway.
         await gateway.disconnect();
 
@@ -197,6 +199,15 @@ exports.reviewProduct = async (data) => {
         console.error(`Failed to submit transaction: ${error}`);
         process.exit(1);
     }
+};
+
+exports.delay = (t, val) => {
+    return new Promise(function (resolve) {
+        setTimeout(function () {
+            console.log('TIMEOUT');
+            resolve(val);
+        }, t);
+    });
 };
 
 // this.reviewProduct({

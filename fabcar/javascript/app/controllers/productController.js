@@ -14,44 +14,45 @@ function base64_encode(file) {
 exports.listProducts = async (req, res) => {
     try {
         const products = await query.listProducts();
-        return res.send({data: products});
+        return res.send({ data: products });
     } catch (error) {
-        return res.status(500).send({message: error.message});
+        return res.status(500).send({ message: error.message });
     }
 };
 
 exports.storeProduct = async (req, res) => {
     try {
         const { error } = productValidator.validateStoreProduct(req.body);
-        if (error) {return res.status(422).send(error);}
+        if (error) { return res.status(422).send(error); }
 
         const result = await invoke.storeProduct(req.body);
         return res.send(result);
     } catch (error) {
-        return res.status(500).send({message: error.message});
+        return res.status(500).send({ message: error.message });
     }
 };
 
 exports.buyProduct = async (req, res) => {
     try {
         const { error } = productValidator.validateBuyProduct(req.body);
-        if (error) {return res.status(422).send(error);}
+        if (error) { return res.status(422).send(error); }
 
         const result = await invoke.buyProduct(req.body);
+        // await delay(7000);
         return res.send(result);
     } catch (error) {
-        return res.status(500).send({message: error.message});
+        return res.status(500).send({ message: error.message });
     }
 };
 
 exports.reviewProduct = async (req, res) => {
     try {
         const { error } = productValidator.validateReviewProduct(req.body);
-        if (error) {return res.status(422).send(error);}
+        if (error) { return res.status(422).send(error); }
 
         const result = await invoke.reviewProduct(req.body);
         return res.send(result);
     } catch (error) {
-        return res.status(500).send({message: error.message});
+        return res.status(500).send({ message: error.message });
     }
 };
