@@ -274,18 +274,18 @@ class FabCar extends Contract {
         console.info('============= END : purchaseCar ===========');
     }
 
-    async createReview(ctx, product_id, user_id, description) {
+    async createReview(ctx, product_id, user_id, description, token) {
         console.info('============= START : Create Review ===========');
 		const carAsBytes = await ctx.stub.getState(product_id);
 		let car = JSON.parse(carAsBytes.toString());
 
 		car.reviews.push({
-			product_id: product_id,
-			user_id: user_id,
-            description: description
+			token: token,
+			userId: user_id,
+            review: description
 		});
 
-        await ctx.stub.putState(id, Buffer.from(JSON.stringify(car)));
+        await ctx.stub.putState(product_id, Buffer.from(JSON.stringify(car)));
         console.info('============= END : Create Review ===========');
     }
 

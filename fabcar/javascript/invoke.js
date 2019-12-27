@@ -186,9 +186,9 @@ exports.reviewProduct = async (data) => {
 
         // Get the contract from the network.
         const contract = network.getContract('fabcar');
-
+        console.log(data);
         //Review car function call;
-        await contract.submitTransaction('createReview', data.product_id, data.user_id, data.description);
+        await contract.submitTransaction('createReview', data.product_id, data.user_id, data.description, 'token23');
         // Disconnect from the gateway.
         await gateway.disconnect();
 
