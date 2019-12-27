@@ -137,10 +137,10 @@ exports.buyProduct = async (data) => {
 
         // Get the contract from the network.
         const contract = network.getContract('fabcar');
-
+        const token = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 10);
         //Purchase car function call;
         //Purchase car requires to arguments , card ID and new Owner name
-        const result1 = await contract.submitTransaction('purchaseCar', data.product_id, data.user_id);
+        const result1 = await contract.submitTransaction('purchaseCar', data.product_id, data.user_id, token);
         // this.delay(7000);
         // const result = await contract.submitTransaction('purchaseCarR2P', data.product_id, data.user_id);
         // Disconnect from the gateway.
@@ -186,9 +186,9 @@ exports.reviewProduct = async (data) => {
 
         // Get the contract from the network.
         const contract = network.getContract('fabcar');
-        console.log(data);
+
         //Review car function call;
-        await contract.submitTransaction('createReview', data.product_id, data.user_id, data.description, 'token23');
+        await contract.submitTransaction('createReview', data.product_id, data.user_id, data.description, data.token);
         // Disconnect from the gateway.
         await gateway.disconnect();
 

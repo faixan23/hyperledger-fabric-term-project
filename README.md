@@ -68,3 +68,11 @@ nodemon index.js
 ```
 
 5- Check that API is running or not by visiting the following [link](http://localhost:8080).
+
+## Restarting Network
+
+```
+docker stop $(docker ps -a -q)
+docker rmi -f $(docker images | grep fabcar | awk '{print $3}')
+docker ps -qa|xargs docker rm
+```

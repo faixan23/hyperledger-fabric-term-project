@@ -30,6 +30,7 @@ exports.validateReviewProduct = (data) => {
         product_id: Joi.string().required(),
         user_id: Joi.string().required(),
         description: Joi.string().required(),
+        token: Joi.string().required(),
     });
 
     return schema.validate(data);

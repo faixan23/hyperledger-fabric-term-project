@@ -162,7 +162,7 @@ class FabCar extends Contract {
 
 
 	//purchase car code
-	async purchaseCar(ctx, productId, userId) {
+	async purchaseCar(ctx, productId, userId, token) {
         console.info('============= START : purchaseCar ===========');
 
         const carAsBytes = await ctx.stub.getState(productId); // get the car from chaincode state
@@ -182,11 +182,14 @@ class FabCar extends Contract {
 		// const newOnwer = JSON.parse(await ctx.stub.getState(oldownerName).toString());
 		// const oldowner = JSON.parse(await ctx.stub.getState(oldownerName).toString());
 		if (value > user.balance) {
-			throw new Error(`${user.balane} is not enough for purchasing the car`);
-		}
+			throw new Error(`${user.balane} is not enough for purchasing the product`);
+        }
+        else if (car.quantity == 0) {
+            throw new Error(`Product is out of stock.`);
+        }
 		user.balance = parseInt(user.balance) - value;
         car.quantity = car.quantity - 1;
-        let token = 'sdadasd';
+        // let token = 'sdadasd';
         // let token = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5);
         user.puchasedProducts.push({
             productId: car.id,
