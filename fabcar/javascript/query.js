@@ -40,7 +40,7 @@ exports.listProducts = async () => {
         // queryAllCars transaction - requires no arguments, ex: ('queryAllCars')
         // const result = await contract.evaluateTransaction('queryCar', 'CUP15');
         const result = await contract.evaluateTransaction('queryAllCars');
-        console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
+        console.log(`Transaction has been evaluated.`);
         return JSON.parse(result.toString());
 
     } catch (error) {
