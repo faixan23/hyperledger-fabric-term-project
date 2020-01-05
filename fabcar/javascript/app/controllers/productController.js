@@ -1,16 +1,8 @@
 const query = require('../../query');
 const invoke = require('../../invoke');
 const productValidator = require('../../app/validations/productValidator');
-const fs = require('fs');
 
-// function to encode file data to base64 encoded string
-function base64_encode(file) {
-    // read binary data
-    let bitmap = fs.readFileSync(file);
-    // convert binary data to base64 encoded string
-    return new Buffer(bitmap).toString('base64');
-}
-
+/* List Products */
 exports.listProducts = async (req, res) => {
     try {
         const products = await query.listProducts();
@@ -20,6 +12,7 @@ exports.listProducts = async (req, res) => {
     }
 };
 
+/* Add Product */
 exports.storeProduct = async (req, res) => {
     try {
         const { error } = productValidator.validateStoreProduct(req.body);
@@ -32,19 +25,20 @@ exports.storeProduct = async (req, res) => {
     }
 };
 
+/* Buy Product */
 exports.buyProduct = async (req, res) => {
     try {
         const { error } = productValidator.validateBuyProduct(req.body);
         if (error) { return res.status(422).send(error); }
 
         const result = await invoke.buyProduct(req.body);
-        // await delay(7000);
         return res.send(result);
     } catch (error) {
         return res.status(500).send({ message: error.message });
     }
 };
 
+/* Review Product */
 exports.reviewProduct = async (req, res) => {
     try {
         const { error } = productValidator.validateReviewProduct(req.body);

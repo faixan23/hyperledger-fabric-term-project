@@ -36,9 +36,7 @@ exports.listProducts = async () => {
         const contract = network.getContract('fabcar');
 
         // Evaluate the specified transaction.
-        // queryCar transaction - requires 1 argument, ex: ('queryCar', 'CAR4')
         // queryAllCars transaction - requires no arguments, ex: ('queryAllCars')
-        // const result = await contract.evaluateTransaction('queryCar', 'CUP15');
         const result = await contract.evaluateTransaction('queryAllCars');
         console.log(`Transaction has been evaluated.`);
         return JSON.parse(result.toString());
@@ -76,9 +74,6 @@ exports.getUser = async (id) => {
         // Get the contract from the network.
         const contract = network.getContract('fabcar');
         // Evaluate the specified transaction.
-        // queryCar transaction - requires 1 argument, ex: ('queryCar', 'CAR4')
-        // queryAllCars transaction - requires no arguments, ex: ('queryAllCars')
-        // const result = await contract.evaluateTransaction('queryCar', 'CUP15');
         const result = await contract.evaluateTransaction('queryCar', id);
         console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
         return JSON.parse(result.toString());
@@ -86,9 +81,5 @@ exports.getUser = async (id) => {
     } catch (error) {
         console.error(`Failed to evaluate transaction: ${error}`);
         throw error;
-        // process.exit(1);
     }
 }
-
-// main();
-this.listProducts();
