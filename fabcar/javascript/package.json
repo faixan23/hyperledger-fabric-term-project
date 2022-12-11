@@ -17,7 +17,7 @@
     "dependencies": {
         "@hapi/joi": "^16.1.8",
         "cors": "^2.8.5",
-        "express": "^4.17.1",
+        "express": "^4.17.3",
         "express-fileupload": "^1.1.6",
         "fabric-ca-client": "~1.4.0",
         "fabric-network": "~1.4.0",
